@@ -1,0 +1,3 @@
+body.theme-night .med-tip{background:#2a190d!important;color:#fed7aa!important;border-color:#a16207!important}
+@media(max-width:720px){.med-grid{grid-template-columns:1fr}}
+
