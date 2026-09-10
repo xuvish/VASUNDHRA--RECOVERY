@@ -1,0 +1,39 @@
+
+(()=>{
+'use strict';
+const H=1.59, START_WEIGHT=54.6, FLUID_GOAL=2200, STORAGE_KEY='vasundhra_recovery_final_2026';
+const $=id=>document.getElementById(id);
+const localDateKey=(dt=new Date())=>`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+const today=()=>localDateKey(new Date());
+const clone=x=>JSON.parse(JSON.stringify(x));
+const defaultState=()=>({version:1,treatmentStart:'2026-09-07',nextLftDate:'2026-09-11',daily:{},weights:{},labs:{lftResults:[]},finalized:{},activity:[]});
+let state=defaultState(), activeDate=today(), persistent=true;
+try{const raw=localStorage.getItem(STORAGE_KEY);if(raw)state={...defaultState(),...JSON.parse(raw)};localStorage.setItem('__vr_test','1');localStorage.removeItem('__vr_test')}catch(e){persistent=false}
+state.daily=state.daily||{};state.weights=state.weights||{};state.labs=state.labs||{lftResults:[]};state.labs.lftResults=state.labs.lftResults||[];state.finalized=state.finalized||{};state.activity=state.activity||[];
+function persist(){try{if(persistent)localStorage.setItem(STORAGE_KEY,JSON.stringify(state));return true}catch(e){persistent=false;return false}}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.classList.remove('show'),1600)}
+function save(msg){const ok=persist();render();toast(ok?msg:'Saved for this session only — browser storage is blocked.')}
+function prettyDate(s){if(!s)return '—';const [y,m,d]=s.split('-').map(Number);const mon=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];return `${d} ${mon[m-1]} ${y}`}
+function parseLocal(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
+function dayPart(){const h=new Date().getHours();if(h>=5&&h<12)return['Good morning','🌅','Morning'];if(h>=12&&h<17)return['Good afternoon','☀️','Afternoon'];if(h>=17&&h<19)return['Good evening','🌇','Evening'];return['Good night','🌙','Night']}
+function updateGreeting(){const [g,icon,label]=dayPart();$('greeting').textContent=`${g}, Vasundhra ✨`;$('dayIcon').textContent=icon;$('greetingSub').textContent=label==='Night'?'A calm check-in, then rest well.':'One simple check-in at a time.';document.body.classList.toggle('theme-night',new Date().getHours()>=19||new Date().getHours()<5)}
+function bmi(w){return w/(H*H)}
+function daily(date=activeDate){if(!state.daily[date])state.daily[date]={att:'',spo2:null,pulse:null,temp:null,appetite:null,energy:null,sleep:null,symptoms:[],notes:'',fluids:[],proteinBoosters:[]};return state.daily[date]}
+function nonMutatingDaily(date=activeDate){return state.daily[date]||{att:'',spo2:null,pulse:null,temp:null,appetite:null,energy:null,sleep:null,symptoms:[],notes:'',fluids:[],proteinBoosters:[]}}
+function fluidTotal(d){return (d.fluids||[]).reduce((a,x)=>a+(Number(x.ml)||0),0)}
+function proteinTotal(d){return (d.proteinBoosters||[]).reduce((a,x)=>a+(Number(x.g)||0),0)}
+function hasBooster(d){return (d.proteinBoosters||[]).length>0}
+function hasCheckin(d){return !!(d.att||d.spo2||d.pulse||d.temp||d.appetite||d.energy||d.sleep||d.notes||(d.symptoms||[]).length)}
+function progress(d){const f=Math.min(1,fluidTotal(d)/FLUID_GOAL);const b=hasBooster(d)?1:0;const med=d.att==='Yes'?1:0;const c=hasCheckin(d)?1:0;return Math.round((f*.35+b*.25+med*.25+c*.15)*100)}
+function dayNumber(date=today()){if(!state.treatmentStart)return null;return Math.max(1,Math.floor((parseLocal(date)-parseLocal(state.treatmentStart))/86400000)+1)}
+function treatmentDays(){return Object.entries(state.daily).filter(([date])=>date>=state.treatmentStart&&date<=today())}
+function adherence(){const xs=treatmentDays().filter(([,d])=>d.att==='Yes'||d.att==='No');return xs.length?Math.round(xs.filter(([,d])=>d.att==='Yes').length/xs.length*100):null}
+function latestWeight(){const xs=Object.values(state.weights).sort((a,b)=>a.date.localeCompare(b.date));return xs.length?xs[xs.length-1]:{weight:START_WEIGHT,date:state.treatmentStart}}
+function weekInfo(dt=new Date()){const tmp=new Date(dt.getFullYear(),dt.getMonth(),dt.getDate());const day=tmp.getDay()||7;tmp.setDate(tmp.getDate()+4-day);const y0=new Date(tmp.getFullYear(),0,1);const week=Math.ceil((((tmp-y0)/86400000)+1)/7);const mon=new Date(dt.getFullYear(),dt.getMonth(),dt.getDate());const md=mon.getDay()||7;mon.setDate(mon.getDate()-md+1);const sun=new Date(mon);sun.setDate(mon.getDate()+6);return{key:`${tmp.getFullYear()}-W${String(week).padStart(2,'0')}`,week,monday:mon,sunday:sun}}
+function shortDate(d){return d.toLocaleDateString('en-IN',{day:'numeric',month:'short'})}
+function addActivity(type,title,detail,date=activeDate){state.activity.push({id:Date.now()+Math.random(),date,type,title,detail});if(state.activity.length>500)state.activity=state.activity.slice(-500)}
+function playOrb(id){const el=$(id);el.classList.remove('fly');void el.offsetWidth;el.classList.add('fly')}
+function animateBody(kind){if(kind==='fluid')playOrb('orbWater');if(kind==='protein')playOrb('orbFood');if(kind==='medicine')playOrb('orbPill');if(kind==='lft')playOrb('orbTest');$('bodyMessage').textContent=kind==='fluid'?'Hydration added 💧':kind==='protein'?'Protein booster logged 💪':kind==='medicine'?'Medicine check saved 💊':kind==='lft'?'LFT saved 🩸':'Nice work, Vasundhra ✨';setTimeout(()=>{$('bodyMessage').textContent='Hey Vasundhra 👋'},1400)}
+function celebrate(){const w=$('anatomyWrap');w.classList.remove('dance');void w.offsetWidth;w.classList.add('dance');setTimeout(()=>w.classList.remove('dance'),5000)}
+function safety(d){const s=d.symptoms||[];if((d.spo2&&d.spo2<=92)||s.includes('Yellow eyes/skin')||s.includes('Vision change'))return['danger','Important symptom/value logged. Contact the treating team promptly; severe breathing difficulty or very low oxygen needs urgent assessment.'];if(s.length)return['warn','Symptoms logged: '+s.join(', ')+'.'];return['ok','No red-flag symptom logged for the selected day.']}
+function renderDateForm(){const d=nonMut
