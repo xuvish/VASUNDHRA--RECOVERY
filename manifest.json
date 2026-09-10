@@ -1,0 +1,16 @@
+{
+  "name": "Vasundhra Kulshrestha Recovery Companion",
+  "short_name": "Vasundhra Recovery",
+  "start_url": "./#today",
+  "display": "standalone",
+  "background_color": "#f6f8ff",
+  "theme_color": "#6d5dfc",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
