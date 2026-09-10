@@ -1,0 +1,73 @@
+eatment start date</label>
+      <input id="startDate" type="date">
+      <button class="btn" id="saveStart">Save treatment start date</button>
+    </div>
+
+    <div class="card">
+      <div class="label">Treatment day</div>
+      <div class="metric" id="medicineDay">—</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Adherence</div>
+      <div class="metric" id="medicineAdherence">—</div>
+    </div>
+
+    <div class="card full med-normal">
+      <div class="section-title">✅ Usually expected / not automatically dangerous</div>
+      <div class="med-grid">
+        <div class="med-side">
+          <div class="med-icon">🟠</div>
+          <div>
+            <b>Orange / red-orange urine</b>
+            <small>Rifampicin can colour urine orange or red-orange. This is expected and usually harmless.</small>
+          </div>
+        </div>
+        <div class="med-side">
+          <div class="med-icon">💧</div>
+          <div>
+            <b>Orange tears, saliva or sweat</b>
+            <small>These body fluids can also become orange/red-orange. Soft contact lenses may stain.</small>
+          </div>
+        </div>
+        <div class="med-side">
+          <div class="med-icon">🤢</div>
+          <div>
+            <b>Mild stomach upset / nausea</b>
+            <small>Can happen with TB medicines. If it is persistent, worsening or associated with vomiting, poor appetite or abdominal pain, tell the treating team.</small>
+          </div>
+        </div>
+        <div class="med-side">
+          <div class="med-icon">🦴</div>
+          <div>
+            <b>Some joint aches</b>
+            <small>Pyrazinamide can sometimes cause joint pains. Significant or persistent pain should be discussed with the doctor.</small>
+          </div>
+        </div>
+      </div>
+      <div class="med-tip"><b>Important:</b> orange/red-orange colour from rifampicin is different from obvious blood in urine. Do not assume true blood-red urine is a normal medicine effect.</div>
+    </div>
+
+    <div class="card full med-warning">
+      <div class="section-title">⚠️ Report promptly — do not simply ignore these</div>
+      <div class="med-grid">
+        <div class="med-side"><div class="med-icon">🟡</div><div><b>Yellow eyes or yellow skin</b><small>Possible jaundice/liver injury — contact the treating team promptly.</small></div></div>
+        <div class="med-side"><div class="med-icon">🟤</div><div><b>Dark brown / cola-coloured urine</b><small>Especially with nausea, poor appetite, abdominal pain, weakness or jaundice — needs medical advice.</small></div></div>
+        <div class="med-side"><div class="med-icon">👁️</div><div><b>Blurred vision or colour-vision change</b><small>Ethambutol can affect vision. Report new visual changes promptly.</small></div></div>
+        <div class="med-side"><div class="med-icon">🖐️</div><div><b>Persistent tingling / numbness / burning</b><small>Hands or feet symptoms can occur with isoniazid and should be reported.</small></div></div>
+        <div class="med-side"><div class="med-icon">🤮</div><div><b>Persistent vomiting or major loss of appetite</b><small>Particularly if accompanied by abdominal pain, dark urine or unusual tiredness.</small></div></div>
+        <div class="med-side"><div class="med-icon">🌡️</div><div><b>Persistent fever, severe weakness or flu-like illness</b><small>Log it and contact the treating team if significant or persistent.</small></div></div>
+        <div class="med-side"><div class="med-icon">🩹</div><div><b>New rash / worsening itching</b><small>A rash can be minor or serious. Tell the treating team; facial swelling, breathing difficulty, blistering or mouth/eye involvement needs urgent care.</small></div></div>
+        <div class="med-side"><div class="med-icon">🩸</div><div><b>Easy bruising or unusual bleeding</b><small>Not an expected harmless effect — seek medical advice.</small></div></div>
+      </div>
+    </div>
+
+    <div class="card full">
+      <div class="alert info">
+        <b>4-FDC ATT:</b> take the tablets exactly as instructed by AIIMS/DOTS. Do not independently stop, split, add or change the prescribed medicines. If a serious reaction occurs, contact the treating team/urgent care rather than trying to manage it only through this portal.
+      </div>
+    </div>
+  </div>
+</section>
+
+  <section id="labs" class="page"><div class="hero"><h2>🩸 LFT & Follow-up</h2><p>Enter the actual numbers from the lab report. Doctor View then includes the latest readings and trend history.</p></div><div class="grid"><div class="card half"><label>Next LFT date</label><input id="nextLftDate" type="date"><button class="btn" id="saveNextLft">Save follow-up date</button></div><div class="card half"><div id="lftCountdown" class="alert info">Add the next LFT date.</div></div><div class="card full"><div class="section-title">Add LFT result</div><div class="note">Copy the exact values from the laboratory report. Keep the original PDF/photo too because laboratory reference ranges can differ.</div><div class="result-grid" style="margin-top:10px"><div class="fieldbox"><label>Report date</label><input id="lftDate" type="date"></div><div class="fieldbox"><label>ALT / SGPT</label><input id="alt" type="number" step="0.1" placeholder="U/L"></div><div class="fieldbox"><label>AST / SGOT</label><input id="ast" type="number" step="0.1" placeholder="U/L"></div><div class="fieldbox"><label>Total bilirubin</label><input id="tbili" type="number" step="0.01" placeholder="mg/dL"></div><div class="fieldbox"><label>Direct bilirubin</label><input id="dbili" type="number" step="0.01" placeholder="mg/dL"></div><div class="fieldbox"><label>ALP</label><input id="alp" type="number" step="0.1" placeholder="U/L"></div><div class="fieldbox"><label>Albumin</label><input id="albumin" type="number" step="0.01" placeholder="g/dL"></div><div class="fieldbox"><label>Total protein</label><input id="totalProtein" type="number" step="0.01" placeholder="g/dL"></div><div class="fieldbox"><label>GGT (if reported)</lab
